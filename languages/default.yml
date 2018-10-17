@@ -3,6 +3,7 @@ next: Next
 archive_a: Archives
 archive_b: "Archives: %s"
 recent_posts: "Recent Posts"
+diectory_title: "Directory"
 categories: "Categories"
 default_post_title: "Untitled"
 tags: "Tags"

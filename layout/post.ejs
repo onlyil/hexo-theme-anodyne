@@ -55,8 +55,13 @@
                         <hr class="dn-l mw4 black-50 mt5" />
                     <% } %>
 
-                    <!-- Widget 3: Recent Posts -->
-                    <%- partial('_partial/widget-recent-posts') %>
+                    <div class="scroll-fix pt5">
+                        <!-- Widget 3: Recent Posts -->
+                        <%- partial('_partial/widget-recent-posts') %>
+    
+                        <!-- Widget 4 : Post toc -->
+                        <%- partial('_partial/widget-post-toc', {item: page}) %>
+                    </div>
                 </div>
             </div>
         </div>
