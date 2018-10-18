@@ -1,10 +1,33 @@
 .toc
-  padding-left: 20px
+  padding-left: 0
+  list-style none
+  .toc-item
+    &.active > .toc-link
+      position relative
+      color: rgba(0, 0, 0, .5)
+      font-weight: 600
+      &:before
+        content: ''
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        background: rgba(0, 0, 0, .05)
+      &:after
+        content: ''
+        position absolute
+        top 0
+        left 0
+        width 4px
+        height 100%
+        background-color: #999
   .toc-child
-    padding-left: 20px
+    padding-left: 10px
+    list-style none
   .toc-link
     display: block
+    padding: 2px 20px 2px 10px
     &:hover
       color: #999
-      background-color: #eee
       opacity: 1
