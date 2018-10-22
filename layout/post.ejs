@@ -60,7 +60,9 @@
                         <%- partial('_partial/widget-recent-posts') %>
     
                         <!-- Widget 4 : Post toc -->
-                        <%- partial('_partial/widget-post-toc', {item: page}) %>
+                        <% if (theme.toc_widget_show) { %>
+                            <%- partial('_partial/widget-post-toc', {item: page}) %>
+                        <% } %>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,11 @@
-(function (doc){
+(function (doc, win){
   doc.onreadystatechange = function () {
     if (doc.readyState === 'complete') {
-      initScrollFixed()
+      var init = initScrollFixed()
+      win.addEventListener('resize', function () {
+        init.resetSrcollFixed()
+        init.reinitSrcollFixed()
+      })
     }
   }
   
@@ -10,23 +14,38 @@
     if (oFix) {
       var fixTop = oFix.offsetTop,
           fixLeft = oFix.offsetLeft,
-          fixWidth = oFix.clientWidth
-
+          fixWidth = oFix.clientWidth,
+          fixHeight = oFix.clientHeight,
+          oFooter = doc.querySelector('.footer'),
+          footerHeight = oFooter.clientHeight + 20,
+          docHeight = doc.body.clientHeight
+  
       var tocFn = tocLocate()
       tocFn.active(doc.documentElement.scrollTop)
-      doc.addEventListener('scroll', function () {
+      var scrollDo = function () {
         var top = doc.documentElement.scrollTop
         watchTop(top)
         tocFn.active(top)
-      })
+      }
+      doc.addEventListener('scroll', scrollDo)
+      doc.body.style.position = 'relative'
     }
+
     // watch scrolltop to fixed or not
     function watchTop(top) {
       if (top >= fixTop) {
-        oFix.style.position = 'fixed'
-        oFix.style.top = 0
-        oFix.style.left = fixLeft
-        oFix.style.width = fixWidth + 'px'
+        var bottom = docHeight - doc.documentElement.scrollTop - fixHeight
+        if (bottom <= footerHeight) {
+          oFix.style.position = 'absolute'
+          oFix.style.top = 'auto'
+          oFix.style.bottom = footerHeight + 'px'
+        } else {
+          oFix.style.position = 'fixed'
+          oFix.style.top = 0
+          oFix.style.left = fixLeft
+          oFix.style.width = fixWidth + 'px'
+          oFix.style.height = fixHeight + 'px'
+        }
       } else {
         oFix.style.position = 'static'
       }
@@ -37,7 +56,6 @@
           voidFn = function () {}
       if (!toc || !toc.childNodes.length) {
         return {
-          locate: voidFn,
           active: voidFn
         }
       }
@@ -67,19 +85,37 @@
         }
       }
     }
-    // get top and left to document
-    function offset(el) {
-      var x = el.offsetLeft,
-          y = el.offsetTop
-      if (el.offsetParent) {
-        var parentOffset = offset(el.offsetParent)
-        x += parentOffset.x
-        y += parentOffset.y
-      }
-      return {
-        x: x,
-        y: y
+
+    function resetSrcollFixed() {
+      doc.removeEventListener('scroll', scrollDo)
+      if (oFix) {
+        oFix.style.position = 'static'
+        oFix.style.width = 'auto'
+        oFix.style.height = 'auto'
       }
     }
+
+    function reinitSrcollFixed() {
+      if (doc.body.clientWidth > 960) doc.addEventListener('scroll', scrollDo)
+    }
+
+    return {
+      resetSrcollFixed: resetSrcollFixed,
+      reinitSrcollFixed: reinitSrcollFixed
+    }
   }
-})(document)
+  // get top and left to document
+  function offset(el) {
+    var x = el.offsetLeft,
+        y = el.offsetTop
+    if (el.offsetParent) {
+      var parentOffset = offset(el.offsetParent)
+      x += parentOffset.x
+      y += parentOffset.y
+    }
+    return {
+      x: x,
+      y: y
+    }
+  }
+})(document, window)
