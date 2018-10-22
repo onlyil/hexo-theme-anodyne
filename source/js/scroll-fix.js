@@ -99,7 +99,7 @@
     function reinitSrcollFixed() {
       if (doc.body.clientWidth > 960) {
         doc.addEventListener('scroll', scrollDo)
-        scrollDo()
+        scrollDo && scrollDo()
       }
     }
 
