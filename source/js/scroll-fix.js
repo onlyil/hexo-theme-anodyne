@@ -6,6 +6,7 @@
         init.resetSrcollFixed()
         init.reinitSrcollFixed()
       })
+      init.scrollDo()
     }
   }
   
@@ -96,10 +97,14 @@
     }
 
     function reinitSrcollFixed() {
-      if (doc.body.clientWidth > 960) doc.addEventListener('scroll', scrollDo)
+      if (doc.body.clientWidth > 960) {
+        doc.addEventListener('scroll', scrollDo)
+        scrollDo()
+      }
     }
 
     return {
+      scrollDo: scrollDo || function () {},
       resetSrcollFixed: resetSrcollFixed,
       reinitSrcollFixed: reinitSrcollFixed
     }
